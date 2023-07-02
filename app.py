@@ -4,7 +4,7 @@ import plotly.express as px
 import streamlit as st
 
 #pulling the .csv into a dataframe
-vehicles = pd.read_csv("C:\\Users\\13303\\Documents\\Projects\\Sprint_4\\vehicles_us.csv")
+vehicles = pd.read_csv("vehicles_us.csv")
 
 vehicles.head()
 
