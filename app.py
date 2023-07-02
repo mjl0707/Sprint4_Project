@@ -14,26 +14,17 @@ vehicles.info()
 #checking the dataframe for null values
 vehicles.isna().sum()
 
-#getting the median model year
-median_model_year = vehicles['model_year'].median()
+#filling in NULLs in model_year with median based on car model 
+vehicles['model_year'] = vehicles['model_year'].fillna(vehicles.groupby(['model'])['model_year'].transform('median'))
 
-#getting the median odometer value
-median_odometer = vehicles['odometer'].median()
+#filing in NULLs in odometer based on model and model_year
+vehicles['odometer'] = vehicles['odometer'].fillna(vehicles.groupby(['model','model_year'])['odometer'].transform('median'))
 
-#getting the median number of cylinders
-median_cylinders = vehicles['cylinders'].median()
-
-#replacing nulls in the model_year field with the median model year
-vehicles['model_year'] = vehicles['model_year'].fillna(median_model_year)
-
-#replacing nulls in the odometer field with the median odometer value
-vehicles['odometer'] = vehicles['odometer'].fillna(median_odometer)
+#filling in NULLs in cylinders based on car model 
+vehicles['cylinders'] = vehicles['cylinders'].fillna(vehicles.groupby(['model'])['cylinders'].transform('median'))
 
 #replacing nulls in the paint_color field with the value "unknown"
 vehicles['paint_color'] = vehicles['paint_color'].fillna('Unknown')
-
-#replacing nulls in the cylinders field with the median number of cylinders 
-vehicles['cylinders'] = vehicles['cylinders'].fillna(median_cylinders)
 
 #replacing nulls in the is_4wd field with a 0 for no
 vehicles['is_4wd'] = vehicles['is_4wd'].fillna(0)
@@ -69,10 +60,10 @@ st.header('Car Price by Age')
 age_scatter = px.scatter(vehicles, x='car_age', y='price')
 st.write(age_scatter)
 
-st.header('Count of Cars by Make')
+st.header('Count of Cars by Price')
 #building a histogram that shows the count of cars by make
-make_ct = px.histogram(vehicles, x='make')
-st.write(make_ct)
+price_ct = px.histogram(vehicles, x='price')
+st.write(price_ct)
 
 
 
